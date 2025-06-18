@@ -1,3 +1,0 @@
-#navie-receiver findings
-
-##report
