@@ -1,15 +1,16 @@
-# Compiler files
-cache/
-out/
-lib/
+# Generated build artifacts
+/target/
 
-# Ignores development broadcast logs
-!/broadcast
-/broadcast/*/31337/
-/broadcast/**/dry-run/
+# Rust-specific files
+**/*.rs.bk
+**/*.pdb
 
-# Docs
-docs/
+# Dependencies lock file (optional, depends on project type)
+# Cargo.lock
 
-# Dotenv file
-.env
+# Operating System and Editor specific files
+.DS_Store
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
