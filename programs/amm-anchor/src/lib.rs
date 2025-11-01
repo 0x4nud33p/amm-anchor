@@ -1,16 +1,37 @@
 use anchor_lang::prelude::*;
 
-declare_id!("5wD9dzxq17uHvsbXZCDCebW7MxSGSfMDPwaAybBkFV8w");
+pub mod instructions;
+pub mod state;
+pub mod events;
+pub mod constants;
+
+pub use instructions::initialize::*;
+pub use state::*;
+pub use events::*;
+pub use constants::*;
+
+declare_id!("Cp3bxBLgcJjGZSvjKreVvuzhVmSvGRwshSYnH2rxHtij");
 
 #[program]
 pub mod amm_anchor {
     use super::*;
+    
+    pub fn initialize(
+        ctx: Context<Initialize>,
+        seed: u64,
+        fee: u16,
+    ) -> Result<()> {
+        ctx.accounts.initialize(seed, fee, &ctx.bumps)?;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
+        emit!(InitializeAMMEvent {
+            seed,
+            fee,
+            is_locked: ctx.accounts.state.is_locked,
+            mint_x: ctx.accounts.mint_x.key(),
+            mint_y: ctx.accounts.mint_y.key(),
+            mint_lp: ctx.accounts.mint_lp.key(),
+        });
+
         Ok(())
     }
 }
-
-#[derive(Accounts)]
-pub struct Initialize {}

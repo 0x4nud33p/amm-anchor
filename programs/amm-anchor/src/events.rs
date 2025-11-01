@@ -1,0 +1,11 @@
+use anchor_lang::prelude::*;
+
+#[event]
+pub struct InitializeAMMEvent {
+    pub seed: u64,
+    pub is_locked: bool,
+    pub mint_x: Pubkey,
+    pub mint_y: Pubkey,
+    pub mint_lp: Pubkey,
+    pub fee: u16,
+}
