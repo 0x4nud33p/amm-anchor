@@ -9,3 +9,12 @@ pub struct InitializeAMMEvent {
     pub mint_lp: Pubkey,
     pub fee: u16,
 }
+
+#[event]
+pub struct DepositEvent {
+    pub user: Pubkey,
+    pub mint_x: Pubkey,
+    pub mint_y: Pubkey,
+    pub mint_lp: Pubkey,
+    pub state: Pubkey,
+}

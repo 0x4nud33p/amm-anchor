@@ -5,7 +5,7 @@ use anchor_spl::{
 };
 
 use crate::AmmState;
-use crate::{AMM_LP_MINT, AMMSTATE};
+use crate::{AMM_LP_MINT, AMMSEED};
 
 #[derive(Accounts)]
 #[instruction(seed: u64)]
@@ -16,7 +16,7 @@ pub struct Initialize<'info> {
         init, 
         payer = user, 
         space = AmmState::LEN + 8,
-        seeds = [AMMSTATE, mint_x.key().as_ref(), mint_y.key().as_ref(), &seed.to_le_bytes()],
+        seeds = [AMMSEED, mint_x.key().as_ref(), mint_y.key().as_ref(), &seed.to_le_bytes()],
         bump
     )]
     pub state: Account<'info, AmmState>,
