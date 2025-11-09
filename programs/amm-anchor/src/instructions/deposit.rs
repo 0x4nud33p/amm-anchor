@@ -6,7 +6,7 @@ use anchor_spl::{
 
 use crate::errors::AmmError;
 use crate::AmmState;
-use crate::{AMMSEED, AMM_LP_MINT};
+use crate::constants::{AMMSEED, AMM_LP_MINT};
 use constant_product_curve::ConstantProduct;
 
 #[derive(Accounts)]

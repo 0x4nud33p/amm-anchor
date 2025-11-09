@@ -21,7 +21,6 @@ pub enum AmmError {
     InvalidFee,
     #[msg("Zero balance encountered.")]
     ZeroBalance,
-    
 }
 
 impl From<CurveError> for AmmError {

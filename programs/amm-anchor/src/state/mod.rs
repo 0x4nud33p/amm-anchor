@@ -14,12 +14,5 @@ pub struct AmmState {
 }
 
 impl AmmState {
-    pub const LEN: usize = 8 + // seed
-        1 + // is_locked
-        32 + // mint_x
-        32 + // mint_y
-        32 + // mint_lp
-        2 + // fee
-        1 + // bump
-        1; // lp_bump
+    pub const LEN: usize = 8 + 1 + 32 + 32 + 32 + 2 + 1 + 1;
 }

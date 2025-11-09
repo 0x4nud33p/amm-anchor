@@ -5,7 +5,7 @@ use anchor_spl::{
 };
 
 use crate::AmmState;
-use crate::{AMM_LP_MINT, AMMSEED};
+use crate::constants::{AMMSEED, AMM_LP_MINT};
 
 #[derive(Accounts)]
 #[instruction(seed: u64)]

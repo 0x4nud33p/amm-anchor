@@ -1,6 +1,6 @@
 use crate::errors::AmmError;
 use crate::AmmState;
-use crate::{AMMSEED, AMM_LP_MINT};
+use crate::constants::{AMMSEED, AMM_LP_MINT};
 use anchor_lang::prelude::*;
 use anchor_spl::{
     associated_token::AssociatedToken,

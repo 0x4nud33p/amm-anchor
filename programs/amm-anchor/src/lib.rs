@@ -6,10 +6,9 @@ pub mod events;
 pub mod instructions;
 pub mod state;
 
-pub use constants::*;
+pub use instructions::*;
 pub use errors::*;
 pub use events::*;
-pub use instructions::*;
 pub use state::*;
 
 declare_id!("Cp3bxBLgcJjGZSvjKreVvuzhVmSvGRwshSYnH2rxHtij");

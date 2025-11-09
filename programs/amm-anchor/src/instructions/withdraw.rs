@@ -1,5 +1,6 @@
 use anchor_lang::prelude::*;
-use crate::{AMMSEED, AmmState, AMM_LP_MINT};
+use crate::constants::{AMMSEED, AMM_LP_MINT};
+use crate::AmmState;
 
 use anchor_spl::{
     associated_token::AssociatedToken,
