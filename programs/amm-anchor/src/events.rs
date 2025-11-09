@@ -18,3 +18,18 @@ pub struct DepositEvent {
     pub mint_lp: Pubkey,
     pub state: Pubkey,
 }
+
+#[event]
+pub struct LockEvent {
+    pub state: Pubkey,
+    pub is_locked: bool,
+}
+
+#[event]
+pub struct WithdrawEvent {
+    pub user: Pubkey,
+    pub mint_x: Pubkey,
+    pub mint_y: Pubkey,
+    pub mint_lp: Pubkey,
+    pub state: Pubkey,
+}
